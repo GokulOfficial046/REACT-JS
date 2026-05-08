@@ -1,0 +1,172 @@
+// BUTTON , LABEL ,ONCLICK
+
+// ==========================
+// File: Button.jsx
+// ==========================
+function Button({ label, onClick }) {
+  return (
+    <button onClick={onClick} style={styles.button}>
+      {label}
+    </button>
+  );
+}
+
+const styles = {
+  button: {
+    padding: "10px 20px",
+    backgroundColor: "#0d6efd",
+    color: "white",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    marginTop: "10px",
+  },
+};
+
+export default Button;
+
+
+// HEADER 
+
+// ==========================
+// File: Header.jsx
+// ==========================
+function Header({ title }) {
+  return (
+    <header style={styles.header}>
+      <h1>{title}</h1>
+    </header>
+  );
+}
+
+const styles = {
+  header: {
+    backgroundColor: "#212529",
+    color: "white",
+    padding: "20px",
+    textAlign: "center",
+  },
+};
+
+export default Header;
+
+// FOOTER
+
+// ==========================
+// File: Footer.jsx
+// ==========================
+function Footer({ text }) {
+  return (
+    <footer style={styles.footer}>
+      <p>{text}</p>
+    </footer>
+  );
+}
+
+const styles = {
+  footer: {
+    backgroundColor: "#212529",
+    color: "white",
+    padding: "15px",
+    textAlign: "center",
+    marginTop: "20px",
+  },
+};
+
+export default Footer;
+
+//LAYOUT 
+
+// ==========================
+// File: Layout.jsx
+// ==========================
+import Header from "./Header";
+import Footer from "./Footer";
+
+function Layout({ children }) {
+  return (
+    <>
+      <Header title="My React App" />
+
+      <main style={{ padding: "20px" }}>
+        {children}
+      </main>
+
+      <Footer text="© 2026 My Website" />
+    </>
+  );
+}
+
+export default Layout;
+
+// USER CARD
+
+// ==========================
+// File: UserCard.jsx
+// ==========================
+function UserCard({ name, age }) {
+  return (
+    <div style={styles.card}>
+      <h2>{name}</h2>
+      <p>Age: {age}</p>
+    </div>
+  );
+}
+
+const styles = {
+  card: {
+    border: "1px solid #ccc",
+    padding: "20px",
+    borderRadius: "10px",
+    width: "250px",
+    marginTop: "20px",
+    boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+  },
+};
+
+export default UserCard;
+
+//APP JS
+
+// ==========================
+// File: App.jsx
+// ==========================
+import Layout from "./Layout";
+import Button from "./Button";
+import UserCard from "./UserCard";
+
+function App() {
+
+  const handleClick = () => {
+    alert("Button Clicked!");
+  };
+
+  return (
+    <Layout>
+
+      <h2>Welcome to React Components</h2>
+
+      <p>
+        This page uses reusable React components.
+      </p>
+
+      <Button
+        label="Click Me"
+        onClick={handleClick}
+      />
+
+      <UserCard
+        name="Gokul"
+        age={21}
+      />
+
+      <UserCard
+        name="Karthika"
+        age={20}
+      />
+
+    </Layout>
+  );
+}
+
+export default App;
