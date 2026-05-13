@@ -1,0 +1,68 @@
+import React, { useState } from "react";
+
+function ProductList() {
+  const [search, setSearch] = useState("");
+
+  const products = [
+    { id: 1, name: "Laptop" },
+    { id: 2, name: "Mouse" },
+    { id: 3, name: "Keyboard" },
+    { id: 4, name: "Monitor" },
+  ];
+
+  // Filter products based on search input
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <div style={{ padding: "20px", width: "300px" }}>
+      <h2>Product List</h2>
+
+      {/* Filter Input */}
+      <input
+        type="text"
+        placeholder="Search product..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        style={{
+          padding: "8px",
+          width: "100%",
+          marginBottom: "15px",
+        }}
+      />
+
+      {/* Conditional Rendering */}
+      {filteredProducts.length > 0 ? (
+        <ul style={{ listStyle: "none", padding: 0 }}>
+          {filteredProducts.map((product) => (
+            <li
+              key={product.id} // Stable key prop
+              className="product-item"
+              style={{
+                padding: "10px",
+                marginBottom: "8px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+                transition: "0.3s",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) =>
+                (e.target.style.backgroundColor = "#d1e7ff")
+              }
+              onMouseLeave={(e) =>
+                (e.target.style.backgroundColor = "white")
+              }
+            >
+              {product.name}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No products available</p>
+      )}
+    </div>
+  );
+}
+
+export default ProductList;
