@@ -1,0 +1,129 @@
+import React from "react";
+import ReactDOM from "react-dom/client";
+
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  useParams,
+  useNavigate,
+} from "react-router-dom";
+
+/* ---------------- HOME PAGE ---------------- */
+
+function Home() {
+  return (
+    <div>
+      <h1>Home Page</h1>
+      <p>Welcome to React Router Demo</p>
+    </div>
+  );
+}
+
+/* ---------------- ABOUT PAGE ---------------- */
+
+function About() {
+  return (
+    <div>
+      <h1>About Page</h1>
+      <p>This is the About page.</p>
+    </div>
+  );
+}
+
+/* ---------------- USERS PAGE ---------------- */
+
+function Users() {
+  const users = [
+    { id: 1, name: "John" },
+    { id: 2, name: "Alice" },
+    { id: 3, name: "David" },
+  ];
+
+  return (
+    <div>
+      <h1>Users Page</h1>
+
+      {users.map((user) => (
+        <div key={user.id}>
+          <Link to={`/users/${user.id}`}>
+            {user.name}
+          </Link>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ---------------- USER DETAILS PAGE ---------------- */
+
+function UserDetails() {
+  const { id } = useParams();
+
+  const navigate = useNavigate();
+
+  return (
+    <div>
+      <h1>User Details</h1>
+
+      <p>User ID: {id}</p>
+
+      <button onClick={() => navigate("/users")}>
+        Back to Users
+      </button>
+    </div>
+  );
+}
+
+/* ---------------- NAVBAR ---------------- */
+
+function Navbar() {
+  return (
+    <nav style={{ marginBottom: "20px" }}>
+      <Link to="/" style={{ marginRight: "15px" }}>
+        Home
+      </Link>
+
+      <Link to="/about" style={{ marginRight: "15px" }}>
+        About
+      </Link>
+
+      <Link to="/users">
+        Users
+      </Link>
+    </nav>
+  );
+}
+
+/* ---------------- APP ---------------- */
+
+function App() {
+  return (
+    <BrowserRouter>
+      <div style={{ padding: "20px" }}>
+        <Navbar />
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+
+          <Route path="/about" element={<About />} />
+
+          <Route path="/users" element={<Users />} />
+
+          <Route path="/users/:id" element={<UserDetails />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
+  );
+}
+
+/* ---------------- RENDER ---------------- */
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
