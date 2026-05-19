@@ -1,129 +1,123 @@
+// App.jsx
+
 import React from "react";
-import ReactDOM from "react-dom/client";
+import "./index.css";
 
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Link,
-  useParams,
-  useNavigate,
-} from "react-router-dom";
+// Reusable Button Component
+const Button = ({ label, variant = "primary" }) => {
+  const baseClasses =
+    "px-4 py-2 rounded-lg font-semibold transition duration-300 focus:outline-none focus:ring-2";
 
-/* ---------------- HOME PAGE ---------------- */
+  const variants = {
+    primary:
+      "bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700 focus:ring-blue-300",
+    secondary:
+      "bg-gray-200 text-black hover:bg-gray-300 active:bg-gray-400 focus:ring-gray-300",
+    success:
+      "bg-green-500 text-white hover:bg-green-600 active:bg-green-700 focus:ring-green-300",
+  };
 
-function Home() {
   return (
-    <div>
-      <h1>Home Page</h1>
-      <p>Welcome to React Router Demo</p>
-    </div>
+    <button className={`${baseClasses} ${variants[variant]}`}>
+      {label}
+    </button>
   );
-}
+};
 
-/* ---------------- ABOUT PAGE ---------------- */
-
-function About() {
+// Reusable Card Component
+const Card = ({ title, description }) => {
   return (
-    <div>
-      <h1>About Page</h1>
-      <p>This is the About page.</p>
-    </div>
-  );
-}
+    <div className="bg-white shadow-lg rounded-2xl border border-gray-200 p-6 max-w-sm hover:shadow-2xl transition duration-300">
+      <h2 className="text-2xl font-bold text-gray-800 mb-3">{title}</h2>
+      <p className="text-gray-600 leading-relaxed">{description}</p>
 
-/* ---------------- USERS PAGE ---------------- */
-
-function Users() {
-  const users = [
-    { id: 1, name: "John" },
-    { id: 2, name: "Alice" },
-    { id: 3, name: "David" },
-  ];
-
-  return (
-    <div>
-      <h1>Users Page</h1>
-
-      {users.map((user) => (
-        <div key={user.id}>
-          <Link to={`/users/${user.id}`}>
-            {user.name}
-          </Link>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/* ---------------- USER DETAILS PAGE ---------------- */
-
-function UserDetails() {
-  const { id } = useParams();
-
-  const navigate = useNavigate();
-
-  return (
-    <div>
-      <h1>User Details</h1>
-
-      <p>User ID: {id}</p>
-
-      <button onClick={() => navigate("/users")}>
-        Back to Users
-      </button>
-    </div>
-  );
-}
-
-/* ---------------- NAVBAR ---------------- */
-
-function Navbar() {
-  return (
-    <nav style={{ marginBottom: "20px" }}>
-      <Link to="/" style={{ marginRight: "15px" }}>
-        Home
-      </Link>
-
-      <Link to="/about" style={{ marginRight: "15px" }}>
-        About
-      </Link>
-
-      <Link to="/users">
-        Users
-      </Link>
-    </nav>
-  );
-}
-
-/* ---------------- APP ---------------- */
-
-function App() {
-  return (
-    <BrowserRouter>
-      <div style={{ padding: "20px" }}>
-        <Navbar />
-
-        <Routes>
-          <Route path="/" element={<Home />} />
-
-          <Route path="/about" element={<About />} />
-
-          <Route path="/users" element={<Users />} />
-
-          <Route path="/users/:id" element={<UserDetails />} />
-        </Routes>
+      <div className="mt-5">
+        <Button label="Read More" />
       </div>
-    </BrowserRouter>
+    </div>
+  );
+};
+
+export default function App() {
+  return (
+    <div className="min-h-screen bg-gray-100">
+      
+      {/* Responsive Navbar */}
+      <nav className="bg-blue-600 text-white px-6 py-4">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          
+          <h1 className="text-2xl font-bold">Tailwind App</h1>
+
+          <div className="flex flex-col md:flex-row gap-4">
+            <a href="#" className="hover:text-yellow-300 transition">
+              Home
+            </a>
+            <a href="#" className="hover:text-yellow-300 transition">
+              About
+            </a>
+            <a href="#" className="hover:text-yellow-300 transition">
+              Contact
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      {/* Main Section */}
+      <div className="p-6">
+
+        {/* Button Group */}
+        <div className="flex flex-wrap gap-4 mb-10">
+          <Button label="Primary" variant="primary" />
+          <Button label="Secondary" variant="secondary" />
+          <Button label="Success" variant="success" />
+        </div>
+
+        {/* Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <Card
+            title="React + Tailwind"
+            description="Build responsive modern UI easily using utility-first Tailwind CSS classes."
+          />
+
+          <Card
+            title="Reusable Components"
+            description="Extract common styles into reusable props and components for cleaner code."
+          />
+
+          <Card
+            title="Responsive Design"
+            description="Use Tailwind breakpoints and flex/grid utilities for mobile-friendly layouts."
+          />
+        </div>
+      </div>
+    </div>
   );
 }
 
-/* ---------------- RENDER ---------------- */
+/*
+==========================================
+TAILWIND INSTALLATION & CONFIGURATION
+==========================================
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+1. Install Tailwind CSS
 
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+
+2. Configure tailwind.config.js
+
+content: [
+  "./src/**/*.{js,jsx,ts,tsx}",
+],
+
+3. Add Tailwind in src/index.css
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+4. Start React App
+
+npm start
+
+*/
