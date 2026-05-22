@@ -1,0 +1,92 @@
+import React, { useState, createContext, useMemo } from "react";
+import {
+  ThemeProvider,
+  createTheme,
+} from "@mui/material/styles";
+
+import {
+  CssBaseline,
+  Container,
+  Paper,
+  Typography,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Switch,
+  Box,
+} from "@mui/material";
+
+export default function App() {
+  const [gender, setGender] = useState("Male");
+  const [darkMode, setDarkMode] = useState(false);
+
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: darkMode ? "dark" : "light",
+        },
+      }),
+    [darkMode]
+  );
+
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+
+      <Container maxWidth="sm" sx={{ mt: 5 }}>
+        <Paper elevation={4} sx={{ p: 4, borderRadius: 3 }}>
+          <Typography variant="h4" gutterBottom>
+            MUI Form
+          </Typography>
+
+          {/* Gender Radio Group */}
+          <Typography variant="h6" sx={{ mt: 2 }}>
+            Gender
+          </Typography>
+
+          <RadioGroup
+            row
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+          >
+            <FormControlLabel
+              value="Male"
+              control={<Radio />}
+              label="Male"
+            />
+
+            <FormControlLabel
+              value="Female"
+              control={<Radio />}
+              label="Female"
+            />
+          </RadioGroup>
+
+          <Typography sx={{ mt: 1 }}>
+            Selected Gender: {gender}
+          </Typography>
+
+          {/* Dark Light Mode Switch */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              mt: 4,
+            }}
+          >
+            <Typography>
+              {darkMode ? "Dark Mode" : "Light Mode"}
+            </Typography>
+
+            <Switch
+              checked={darkMode}
+              onChange={() => setDarkMode(!darkMode)}
+              sx={{ ml: 2 }}
+            />
+          </Box>
+        </Paper>
+      </Container>
+    </ThemeProvider>
+  );
+}
