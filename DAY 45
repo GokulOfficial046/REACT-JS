@@ -1,0 +1,189 @@
+/// WEATHER APP SRC
+import React, { useState } from "react";
+
+function WeatherApp() {
+  const [city, setCity] = useState("");
+  const [weather, setWeather] = useState(null);
+
+  const API_KEY = "YOUR_API_KEY";
+
+  const getWeather = async () => {
+    if (!city) return;
+
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
+    );
+
+    const data = await response.json();
+    setWeather(data);
+  };
+
+  return (
+    <div style={styles.container}>
+      <h1>Weather App</h1>
+
+      <div>
+        <input
+          type="text"
+          placeholder="Enter city"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          style={styles.input}
+        />
+
+        <button onClick={getWeather} style={styles.button}>
+          Search
+        </button>
+      </div>
+
+      {weather && weather.main && (
+        <div style={styles.card}>
+          <h2>{weather.name}</h2>
+          <h3>{weather.main.temp}°C</h3>
+          <p>{weather.weather[0].main}</p>
+          <p>Humidity: {weather.main.humidity}%</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+const styles = {
+  container: {
+    textAlign: "center",
+    paddingTop: "50px",
+    background: "#87CEEB",
+    height: "100vh",
+  },
+
+  input: {
+    padding: "10px",
+    width: "220px",
+    marginRight: "10px",
+    borderRadius: "5px",
+    border: "none",
+  },
+
+  button: {
+    padding: "10px 15px",
+    border: "none",
+    background: "blue",
+    color: "white",
+    borderRadius: "5px",
+    cursor: "pointer",
+  },
+
+  card: {
+    width: "300px",
+    margin: "20px auto",
+    background: "white",
+    padding: "20px",
+    borderRadius: "10px",
+  },
+};
+
+export default WeatherApp;
+
+/// CACULATOR APP SRC
+ import React, { useState } from "react";
+
+function CalculatorApp() {
+  const [input, setInput] = useState("");
+
+  const handleClick = (value) => {
+    setInput(input + value);
+  };
+
+  const calculate = () => {
+    try {
+      setInput(eval(input).toString());
+    } catch {
+      setInput("Error");
+    }
+  };
+
+  const clearInput = () => {
+    setInput("");
+  };
+
+  return (
+    <div style={styles.container}>
+      <div style={styles.calculator}>
+        <h1>Calculator</h1>
+
+        <input
+          type="text"
+          value={input}
+          readOnly
+          style={styles.input}
+        />
+
+        <div style={styles.buttons}>
+          <button onClick={() => handleClick("7")}>7</button>
+          <button onClick={() => handleClick("8")}>8</button>
+          <button onClick={() => handleClick("9")}>9</button>
+          <button onClick={() => handleClick("/")}>/</button>
+
+          <button onClick={() => handleClick("4")}>4</button>
+          <button onClick={() => handleClick("5")}>5</button>
+          <button onClick={() => handleClick("6")}>6</button>
+          <button onClick={() => handleClick("*")}>*</button>
+
+          <button onClick={() => handleClick("1")}>1</button>
+          <button onClick={() => handleClick("2")}>2</button>
+          <button onClick={() => handleClick("3")}>3</button>
+          <button onClick={() => handleClick("-")}>-</button>
+
+          <button onClick={() => handleClick("0")}>0</button>
+          <button onClick={() => handleClick(".")}>.</button>
+          <button onClick={calculate}>=</button>
+          <button onClick={() => handleClick("+")}>+</button>
+
+          <button onClick={clearInput} style={styles.clear}>
+            Clear
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const styles = {
+  container: {
+    background: "#f0f0f0",
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  calculator: {
+    width: "300px",
+    padding: "20px",
+    background: "white",
+    borderRadius: "10px",
+    textAlign: "center",
+  },
+
+  input: {
+    width: "100%",
+    height: "50px",
+    marginBottom: "20px",
+    fontSize: "22px",
+    textAlign: "right",
+  },
+
+  buttons: {
+    display: "grid",
+    gridTemplateColumns: "repeat(4, 1fr)",
+    gap: "10px",
+  },
+
+  clear: {
+    gridColumn: "span 4",
+    background: "red",
+    color: "white",
+  },
+};
+
+export default CalculatorApp;
