@@ -1,0 +1,183 @@
+// ===============================
+// src/main.js
+// ===============================
+
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+
+import { Provider } from "react-redux";
+import { configureStore, createSlice } from "@reduxjs/toolkit";
+
+// ===============================
+// Counter Slice
+// ===============================
+
+const counterSlice = createSlice({
+  name: "counter",
+
+  initialState: {
+    value: 0,
+  },
+
+  reducers: {
+    increment: (state) => {
+      state.value += 1;
+    },
+
+    decrement: (state) => {
+      state.value -= 1;
+    },
+  },
+});
+
+// ===============================
+// Todos Slice
+// ===============================
+
+const todosSlice = createSlice({
+  name: "todos",
+
+  initialState: {
+    items: [],
+  },
+
+  reducers: {
+    addTodo: (state, action) => {
+      state.items.push({
+        id: Date.now(),
+        text: action.payload,
+        completed: false,
+      });
+    },
+
+    toggleTodo: (state, action) => {
+      const todo = state.items.find(
+        (item) => item.id === action.payload
+      );
+
+      if (todo) {
+        todo.completed = !todo.completed;
+      }
+    },
+  },
+});
+
+// ===============================
+// Export Actions
+// ===============================
+
+export const { increment, decrement } =
+  counterSlice.actions;
+
+export const { addTodo, toggleTodo } =
+  todosSlice.actions;
+
+// ===============================
+// Store
+// ===============================
+
+const store = configureStore({
+  reducer: {
+    counter: counterSlice.reducer,
+    todos: todosSlice.reducer,
+  },
+});
+
+// ===============================
+// App Component
+// ===============================
+
+import { useSelector, useDispatch } from "react-redux";
+import { useState } from "react";
+
+function App() {
+  // Counter State
+  const count = useSelector(
+    (state) => state.counter.value
+  );
+
+  // Todo State
+  const todos = useSelector(
+    (state) => state.todos.items
+  );
+
+  const dispatch = useDispatch();
+
+  const [text, setText] = useState("");
+
+  const handleAddTodo = () => {
+    if (text.trim() !== "") {
+      dispatch(addTodo(text));
+      setText("");
+    }
+  };
+
+  return (
+    <div style={{ padding: "20px" }}>
+      <h1>Redux Toolkit Combined Example</h1>
+
+      {/* Counter Section */}
+      <h2>Counter : {count}</h2>
+
+      <button
+        onClick={() => dispatch(increment())}
+      >
+        Increment
+      </button>
+
+      <button
+        onClick={() => dispatch(decrement())}
+      >
+        Decrement
+      </button>
+
+      <hr />
+
+      {/* Todo Section */}
+      <h2>Todo List</h2>
+
+      <input
+        type="text"
+        placeholder="Enter todo"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+      />
+
+      <button onClick={handleAddTodo}>
+        Add Todo
+      </button>
+
+      <ul>
+        {todos.map((todo) => (
+          <li
+            key={todo.id}
+            onClick={() =>
+              dispatch(toggleTodo(todo.id))
+            }
+            style={{
+              cursor: "pointer",
+              textDecoration: todo.completed
+                ? "line-through"
+                : "none",
+            }}
+          >
+            {todo.text}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// ===============================
+// Render App
+// ===============================
+
+ReactDOM.createRoot(
+  document.getElementById("root")
+).render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
